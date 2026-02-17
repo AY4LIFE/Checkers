@@ -60,6 +60,17 @@ public class Board {
                     board[startRow][startCol] = EMPTY;
                     return true;
                 }
+                else if ((endRow == startRow + 2) && (Math.abs(endCol - startCol) == 2)){
+                    int capturedRow = (startRow + endRow) / 2;
+                    int capturedCol = (startCol + endCol) / 2;
+
+                    if (board[capturedRow][capturedCol] == RED){
+                        board[endRow][endCol] = board[startRow][startCol];
+                        board[startRow][startCol] = EMPTY;
+                        board[capturedRow][capturedCol] = EMPTY;
+                        return true;
+                    }
+                }
                 else return false;
             }
             else if (currentPlayer == RED){
@@ -67,6 +78,17 @@ public class Board {
                     board[endRow][endCol] = board[startRow][startCol];
                     board[startRow][startCol] = EMPTY;
                     return true;
+                }
+                else if ((endRow == startRow - 2) && (Math.abs(endCol - startCol) == 2)){
+                    int capturedRow = (startRow + endRow) / 2;
+                    int capturedCol = (startCol + endCol) / 2;
+
+                    if (board[capturedRow][capturedCol] == BLACK){
+                        board[endRow][endCol] = board[startRow][startCol];
+                        board[startRow][startCol] = EMPTY;
+                        board[capturedRow][capturedCol] = EMPTY;
+                        return true;
+                    }
                 }
                 else return false;
             }
