@@ -55,58 +55,85 @@ public class Board {
         }
     }
     public boolean movePiece(int startRow, int startCol, int endRow,
-                             int endCol, int currentPlayer){
+                             int endCol, int currentPlayer) {
 
         if (startRow < 0 || startRow >= SIZE ||
                 startCol < 0 || startCol >= SIZE ||
                 endRow < 0 || endRow >= SIZE ||
                 endCol < 0 || endCol >= SIZE) {
             return false;
+        }
+        int piece = board[startRow][startCol];
 
-    }else if (board[startRow][startCol] == EMPTY) return false;
-        else if (board[startRow][startCol] != currentPlayer) return false;
-        else if (board[endRow][endCol] != EMPTY) return false;
+        if (piece == EMPTY) return false;
+        if (currentPlayer == BLACK && !isBlack(piece)) return false;
+        if (currentPlayer == RED && !isRed(piece)) return false;
+        if (board[endRow][endCol] != EMPTY) return false;
 
-        else{
-            if (currentPlayer == BLACK){
-                if ((endRow == startRow + 1) && (Math.abs(endCol - startCol) == 1)){
-                    board[endRow][endCol] = board[startRow][startCol];
-                    board[startRow][startCol] = EMPTY;
-                    return true;
-                }
-                else if ((endRow == startRow + 2) && (Math.abs(endCol - startCol) == 2)){
-                    int capturedRow = (startRow + endRow) / 2;
-                    int capturedCol = (startCol + endCol) / 2;
+        int rowDiff = endRow - startRow;
+        int colDiff = endCol - startCol;
 
-                    if (board[capturedRow][capturedCol] == RED){
-                        board[endRow][endCol] = board[startRow][startCol];
-                        board[startRow][startCol] = EMPTY;
-                        board[capturedRow][capturedCol] = EMPTY;
-                        return true;
-                    }
-                }
-                else return false;
+        if (isKing(piece)) {
+            if ((Math.abs(rowDiff) == 1) && Math.abs(colDiff) == 1) {
+                board[endRow][endCol] = piece;
+                board[startRow][startCol] = EMPTY;
+                return true;
             }
-            else if (currentPlayer == RED){
-                if ((endRow == startRow - 1) && (Math.abs(endCol - startCol) == 1)){
-                    board[endRow][endCol] = board[startRow][startCol];
-                    board[startRow][startCol] = EMPTY;
-                    return true;
-                }
-                else if ((endRow == startRow - 2) && (Math.abs(endCol - startCol) == 2)){
-                    int capturedRow = (startRow + endRow) / 2;
-                    int capturedCol = (startCol + endCol) / 2;
 
-                    if (board[capturedRow][capturedCol] == BLACK){
-                        board[endRow][endCol] = board[startRow][startCol];
-                        board[startRow][startCol] = EMPTY;
-                        board[capturedRow][capturedCol] = EMPTY;
-                        return true;
-                    }
-                }
-                else return false;
+            if ((Math.abs(rowDiff) == 2) && Math.abs(colDiff) == 2) {
+                int capturedRow = (startRow + endRow) / 2;
+                int capturedCol = (startCol + endCol) / 2;
+                int capturedPiece = board[capturedRow][capturedCol];
+
+
+
+            if ((isBlack(piece) && isRed(capturedPiece)) ||
+                    (isRed(piece) && isBlack(capturedPiece))){
+                board[endRow][endCol] = piece;
+                board[startRow][startCol] = EMPTY;
+                board[capturedRow][capturedCol] = EMPTY;
+                return true;
             }
         }
+            return false;
+    }
+        int direction;
+        if (isBlack(piece)){direction = 1;} else {direction = -1;}
+
+        if (rowDiff == direction && Math.abs(colDiff) == 1){
+            board[endRow][endCol] = piece;
+            board[startRow][startCol] = EMPTY;
+
+            if (piece == BLACK && endRow == SIZE - 1)
+                board[endRow][endCol] = BLACK_KING;
+
+            if (piece == RED && endRow == 0)
+                board[endRow][endCol] = RED_KING;
+
+            return true;
+        }
+
+        if ((rowDiff == 2 * direction) && (Math.abs(colDiff) == 2)){
+            int capturedRow = (startRow + endRow) / 2;
+            int capturedCol = (startCol + endCol) / 2;
+            int capturedPiece = board[capturedRow][capturedCol];
+
+            if ((isBlack(piece) && isRed(capturedPiece)) ||
+                    (isRed(piece) && isBlack(capturedPiece))){
+                board[endRow][endCol] = piece;
+                board[startRow][startCol] = EMPTY;
+                board[capturedRow][capturedCol] = EMPTY;
+
+                if (piece == BLACK && endRow == SIZE - 1)
+                    board[endRow][endCol] = BLACK_KING;
+
+                if (piece == RED && endRow == 0)
+                    board[endRow][endCol] = RED_KING;
+
+                return true;
+            }
+        }
+
         return false;
     }
 
