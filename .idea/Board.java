@@ -4,10 +4,24 @@ public class Board {
     public static int EMPTY = 0;
     public static final int BLACK = 1;
     public static final int RED = 2;
+    public static final int BLACK_KING = 3;
+    public static final int RED_KING = 4;
 
     public Board(){
         board = new int[SIZE][SIZE];
         initializeBoard();
+    }
+
+    private boolean isBlack(int piece){
+        return piece == BLACK || piece == BLACK_KING;
+    }
+
+    private boolean isRed(int piece){
+        return piece == RED || piece == RED_KING;
+    }
+
+    private boolean isKing(int piece){
+        return piece == BLACK_KING || piece == RED_KING;
     }
 
     public void initializeBoard(){
@@ -23,7 +37,7 @@ public class Board {
         }
     }
     public void printBoard(){
-        System.out.print("   ");
+        System.out.print("  ");
         for (int col = 0; col < SIZE; col++){
             System.out.print(col + " ");
         }
