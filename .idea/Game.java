@@ -33,6 +33,16 @@ public class Game {
 
             boolean moved = board.movePiece(startRow, startCol, endRow, endCol, currentPlayer);
             if (moved) {
+
+                int winner = board.checkWin();
+                if (winner != board.EMPTY){
+                    if (winner == board.BLACK)
+                        System.out.println("\nBLACK Wins!!!");
+                    else
+                        System.out.println("\nRED Wins!!!");
+                    break;
+                }
+
                 if (currentPlayer == Board.BLACK) currentPlayer = Board.RED;
                 else currentPlayer = Board.BLACK;
             } else System.out.println("Invalid move");

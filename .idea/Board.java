@@ -137,4 +137,75 @@ public class Board {
         return false;
     }
 
+
+    public int checkWin(){
+        int blackCount = 0;
+        int redCount = 0;
+
+        for (int row = 0; row < SIZE; row++){
+            for (int col = 0; col < SIZE; col++){
+                if (isBlack(board[row][col])) blackCount++;
+                else if (isRed(board[row][col])) redCount++;
+            }
+        }
+        if ((blackCount == 0) || !hasValidMove(BLACK)) return RED;
+        else if ((redCount == 0) || !hasValidMove(RED)) return BLACK;
+        else return EMPTY;
+    }
+
+    public boolean hasValidMove(int player){
+        for (int row = 0; row < SIZE; row++){
+            for (int col = 0; col < SIZE; col++){
+                int piece = board[row][col];
+                if ((player == BLACK && isBlack(piece)) ||
+                        (player == RED && isRed(piece))){
+
+                    int[] directions = new int[0];
+                    if ((piece == BLACK_KING) || (piece == RED_KING)) {
+                        directions = new int[]{1, -1};
+                    }
+                    else if (piece == BLACK) {
+                        directions = new int[]{1};
+                    }
+                    else if (piece == RED) {
+                        directions = new int[]{-1};
+                    }
+
+                    for (int direction : directions){
+                        int[] colSteps = {1,-1};
+                        for (int colStep : colSteps){
+                            int newRow = row + directions[direction];
+                            int newCol = col + colSteps[colStep];
+
+                            if ((newRow >= 0 && newRow < SIZE) &&
+                                    (newCol >= 0 && newCol < SIZE)){
+                                if (board[newRow][newCol] == EMPTY)
+                                    return true;
+                            }
+
+                        int jumpRow = row + (2 * directions[direction]);
+                        int jumpCol = col + (2 * colSteps[colStep]);
+                        int middleRow = row + directions[direction];
+                        int middleCol = col + colSteps[colStep];
+
+                            if ((jumpRow >= 0 && jumpRow < SIZE) &&
+                                    (jumpCol >= 0 && jumpCol < SIZE)) {
+                                if (board[jumpRow][jumpCol] == EMPTY) {
+                                    int middlePiece = board[middleRow][middleCol];
+
+                                    if (board[jumpRow][jumpCol] == EMPTY &&
+                                            ((isBlack(piece) && isRed(middlePiece)) ||
+                                                    (isRed(piece) && isBlack(middlePiece)))) {
+                                        return true;
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
