@@ -214,7 +214,7 @@ public class Board {
                     for (int direction : directions){
                         int[] colSteps = {1,-1}; // These are the possible column steps
                         for (int colStep : colSteps){
-                            int newRow = row + directions[direction];
+                            int newRow = row + directions[direction]; // TODO: There is an error here. Trying to fix it
                             int newCol = col + colSteps[colStep];
                             // Check if the normal pieces have any moves left
                             if ((newRow >= 0 && newRow < SIZE) &&
