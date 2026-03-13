@@ -214,8 +214,8 @@ public class Board {
                     for (int direction : directions){
                         int[] colSteps = {1,-1}; // These are the possible column steps
                         for (int colStep : colSteps){
-                            int newRow = row + directions[direction]; // TODO: There is an error here. Trying to fix it
-                            int newCol = col + colSteps[colStep];
+                            int newRow = row + direction;
+                            int newCol = col + colStep;
                             // Check if the normal pieces have any moves left
                             if ((newRow >= 0 && newRow < SIZE) &&
                                     (newCol >= 0 && newCol < SIZE)){
@@ -223,10 +223,10 @@ public class Board {
                                     return true;
                             }
 
-                        int jumpRow = row + (2 * directions[direction]);
-                        int jumpCol = col + (2 * colSteps[colStep]);
-                        int middleRow = row + directions[direction];
-                        int middleCol = col + colSteps[colStep];
+                        int jumpRow = row + (2 * direction);
+                        int jumpCol = col + (2 * colStep);
+                        int middleRow = row + direction;
+                        int middleCol = col + colStep;
                             // Check if when you are in a captured situations, you have moves left
                             if ((jumpRow >= 0 && jumpRow < SIZE) &&
                                     (jumpCol >= 0 && jumpCol < SIZE)) {
